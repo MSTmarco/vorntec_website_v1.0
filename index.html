@@ -1,0 +1,1689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VÖRNTEC</title>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #2F488E;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Navigation Menu */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            background: rgba(47, 72, 142, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        nav.hidden {
+            transform: translateY(-100%);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.25rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .nav-logo {
+            height: 24px;
+            filter: brightness(0) invert(1);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .nav-links a:hover {
+            color: #fff;
+        }
+        
+        .nav-cta {
+            background: transparent;
+            color: #fff;
+            padding: 0.65rem 1.5rem;
+            border: 2px solid #fff;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .nav-cta:hover {
+            background: #fff;
+            color: #2F488E;
+        }
+        
+        /* Teams section scroll lock */
+        .teams {
+            position: relative;
+        }
+        
+        .teams.scroll-locked {
+            overflow: hidden;
+        }
+        
+        /* Highlights Section - Redesigned */
+        .highlights {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #000;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+        
+        /* Subtle pattern on white */
+        .highlights::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(47, 72, 142, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(47, 72, 142, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        .highlights::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #2F488E 20%, 
+                #2F488E 80%, 
+                transparent 100%);
+            animation: scanline 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .highlights-container {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .highlights-stat {
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 2rem;
+            color: #2F488E;
+            letter-spacing: -0.02em;
+        }
+        
+        .highlights-label {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            color: #000;
+        }
+        
+        .highlights-description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 400;
+            line-height: 1.6;
+            opacity: 0.7;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+        }
+        
+        /* Tech grid pattern */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 6rem 2rem 2rem;
+            background: #2F488E;
+            overflow: hidden;
+        }
+        
+        /* Particles canvas */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+        
+        .hero-container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .logo {
+            max-width: 240px;
+            height: auto;
+            margin: 0 auto 4rem;
+            display: block;
+            filter: brightness(0) invert(1);
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            font-weight: 400;
+            line-height: 1.6;
+            opacity: 0.85;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                max-width: 180px;
+                margin-bottom: 3rem;
+            }
+        }
+        
+        /* Second Section - White */
+        .problem {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #000;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+        
+        /* Subtle pattern on white */
+        .problem::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(47, 72, 142, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(47, 72, 142, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        /* Techy transition effect */
+        .problem::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #2F488E 20%, 
+                #2F488E 80%, 
+                transparent 100%);
+            animation: scanline 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        @keyframes scanline {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+        
+        .problem-container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .problem-stat {
+            font-size: clamp(5rem, 15vw, 10rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 2rem;
+            color: #2F488E;
+            letter-spacing: -0.02em;
+        }
+        
+        .problem-label {
+            font-size: clamp(1.5rem, 3vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            color: #000;
+        }
+        
+        .problem-description {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 400;
+            line-height: 1.6;
+            opacity: 0.7;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .recovery-highlight {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(47, 72, 142, 0.05);
+            border-left: 3px solid #2F488E;
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 500;
+            color: #2F488E;
+        }
+        
+        @media (max-width: 768px) {
+            .recovery-highlight {
+                padding: 1rem;
+            }
+        }
+        
+        /* Third Section - Climate Impact - Blue */
+        .climate {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2F488E;
+            color: #fff;
+            padding: 4rem 2rem;
+            position: relative;
+        }
+        
+        /* Grid pattern for consistency */
+        .climate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        /* Transition line */
+        .climate::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #fff 20%, 
+                #fff 80%, 
+                transparent 100%);
+            animation: scanline 3s ease-in-out infinite;
+        }
+        
+        .climate-container {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .climate-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 4rem;
+            opacity: 0.9;
+        }
+        
+        .climate-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4rem;
+            margin-bottom: 4rem;
+        }
+        
+        .climate-stat {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+        
+        .climate-stat::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            width: 2px;
+            height: 60px;
+            background: #fff;
+        }
+        
+        .climate-number {
+            font-size: clamp(4rem, 10vw, 8rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+        }
+        
+        .climate-label {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 400;
+            line-height: 1.5;
+            opacity: 0.85;
+        }
+        
+        .climate-note {
+            font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+            opacity: 0.6;
+            margin-top: 1rem;
+        }
+        
+        .references {
+            text-align: center;
+            font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+            opacity: 0.5;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        @media (max-width: 768px) {
+            .climate-stats {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            
+            .climate-stat {
+                padding: 2rem 1rem;
+            }
+        }
+        
+        /* Workflow Section - White */
+        .workflow {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #000;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+        
+        /* Subtle pattern on white */
+        .workflow::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(47, 72, 142, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(47, 72, 142, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        /* Transition line */
+        .workflow::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #2F488E 20%, 
+                #2F488E 80%, 
+                transparent 100%);
+            animation: scanline 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .workflow-container {
+            max-width: 1400px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .workflow-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 4rem;
+            color: #2F488E;
+        }
+        
+        /* Top row: 1 -> 2 -> 3 */
+        .workflow-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .workflow-step {
+            flex: 1;
+            max-width: 320px;
+            text-align: center;
+        }
+        
+        .step-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(47, 72, 142, 0.1);
+            border-radius: 8px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #2F488E;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 40px;
+            margin-bottom: 1rem;
+        }
+        
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #2F488E;
+        }
+        
+        .step-description {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            opacity: 0.7;
+        }
+        
+        .workflow-arrow {
+            font-size: 2rem;
+            color: #2F488E;
+            font-weight: 700;
+        }
+        
+        .workflow-arrow.down {
+            text-align: right;
+            margin-right: 15%;
+            font-size: 2.5rem;
+        }
+        
+        /* Bottom row: 6 <- 5 <- 4 */
+        .workflow-row.reverse {
+            flex-direction: row-reverse;
+        }
+        
+        @media (max-width: 1024px) {
+            .workflow-row {
+                flex-direction: column;
+                gap: 3rem;
+            }
+            
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+            
+            .workflow-arrow.down {
+                transform: rotate(0deg);
+                text-align: center;
+                margin: 0;
+            }
+            
+            .workflow-row.reverse {
+                flex-direction: column;
+            }
+            
+            .workflow-step {
+                max-width: 400px;
+            }
+        }
+        
+        /* Teams Section - White */
+        .teams {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #000;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+        
+        /* Subtle pattern on white */
+        .teams::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(47, 72, 142, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(47, 72, 142, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        /* Transition line */
+        .teams::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #2F488E 20%, 
+                #2F488E 80%, 
+                transparent 100%);
+            animation: scanline 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .teams-container {
+            max-width: 650px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .teams-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #2F488E;
+        }
+        
+        .teams-description {
+            text-align: center;
+            font-size: 0.95rem;
+            color: rgba(0, 0, 0, 0.6);
+            max-width: 600px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+        
+        .teams-window {
+            background: #000;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(47, 72, 142, 0.15);
+        }
+        
+        .teams-header {
+            background: #1a1a1a;
+            padding: 0.6rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .teams-dots {
+            display: flex;
+            gap: 0.35rem;
+        }
+        
+        .teams-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .teams-header-text {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .teams-messages {
+            padding: 1.25rem;
+            height: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: #000;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+        }
+        
+        .teams-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .teams-messages::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        .teams-messages::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+        
+        .teams-message {
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+            opacity: 0;
+            animation: messageAppear 0.5s ease forwards;
+        }
+        
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .teams-message.user {
+            flex-direction: row-reverse;
+            margin-left: auto;
+            max-width: 55%;
+        }
+        
+        .teams-message.bot {
+            max-width: 70%;
+        }
+        
+        .teams-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+        
+        .teams-avatar.bot {
+            background: #00D4AA;
+            color: #000;
+        }
+        
+        .teams-avatar.user {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+        
+        .teams-message-content {
+            flex: 1;
+        }
+        
+        .teams-message-name {
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 0.35rem;
+            color: #fff;
+        }
+        
+        .teams-message-time {
+            font-size: 0.65rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-left: 0.4rem;
+        }
+        
+        .teams-bubble {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 0.85rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            line-height: 1.5;
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        .teams-message.user .teams-bubble {
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .teams-bubble.success {
+            background: rgba(0, 212, 170, 0.15);
+            border: 1px solid rgba(0, 212, 170, 0.3);
+        }
+        
+        .teams-badge {
+            display: inline-block;
+            padding: 0.25rem 0.55rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.6rem;
+        }
+        
+        .teams-badge.alert {
+            background: rgba(255, 107, 107, 0.2);
+            color: #FF6B6B;
+        }
+        
+        .teams-badge.success {
+            background: rgba(0, 212, 170, 0.2);
+            color: #00D4AA;
+        }
+        
+        @media (max-width: 768px) {
+            .teams-message {
+                max-width: 100% !important;
+            }
+        }
+        
+        /* Proof Section - Blue */
+        .proof {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #2F488E;
+            color: #fff;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+        
+        /* Grid pattern */
+        .proof::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        /* Transition line */
+        .proof::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #fff 20%, 
+                #fff 80%, 
+                transparent 100%);
+            animation: scanline 3s ease-in-out infinite;
+        }
+        
+        .proof-container {
+            max-width: 1200px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+        
+        .proof-header {
+            margin-bottom: 3rem;
+        }
+        
+        .proof-title {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .proof-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0.6;
+            margin-bottom: 1.5rem;
+        }
+        
+        .proof-description {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .accuracy-hero {
+            margin: 4rem 0;
+        }
+        
+        .accuracy-number {
+            font-size: clamp(5rem, 12vw, 9rem);
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        
+        .accuracy-subtitle {
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            opacity: 0.7;
+        }
+        
+        .proof-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1000px;
+            margin: 4rem auto;
+        }
+        
+        .proof-metric {
+            padding: 2rem 1rem;
+            border-left: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+        
+        .proof-metric::before {
+            content: '';
+            position: absolute;
+            left: -2px;
+            top: 0;
+            width: 2px;
+            height: 40px;
+            background: #fff;
+        }
+        
+        .proof-metric-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .proof-metric-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+        
+        .proof-details {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .proof-details-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .proof-details-text {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.7;
+        }
+        
+        .proof-conclusion {
+            margin-top: 3rem;
+            font-size: 1.2rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 768px) {
+            .proof-metrics {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        /* Contact Section - White */
+        .contact {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            color: #000;
+            padding: 6rem 2rem;
+            position: relative;
+        }
+        
+        /* Subtle pattern on white */
+        .contact::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(47, 72, 142, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(47, 72, 142, 0.015) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+        
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                #2F488E 20%, 
+                #2F488E 80%, 
+                transparent 100%);
+            animation: scanline 3s ease-in-out infinite;
+            z-index: 1;
+        }
+        
+        .contact-container {
+            max-width: 900px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .contact-title {
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            color: #2F488E;
+            margin-bottom: 3rem;
+            line-height: 1.2;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+        
+        .contact-item {
+            text-align: center;
+        }
+        
+        .contact-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.75rem;
+        }
+        
+        .contact-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2F488E;
+        }
+        
+        .contact-email {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2F488E;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #2F488E;
+            transition: opacity 0.3s ease;
+        }
+        
+        .contact-email:hover {
+            opacity: 0.7;
+        }
+        
+        footer {
+            background: #2F488E;
+            color: rgba(255, 255, 255, 0.6);
+            padding: 2rem;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <nav id="main-nav">
+        <div class="nav-container">
+            <img src="vorntec.png" alt="VÖRNTEC" class="nav-logo">
+            <div class="nav-links">
+                <a onclick="document.getElementById('problem-section').scrollIntoView({behavior:'smooth'})">Problem</a>
+                <a onclick="document.getElementById('climate-section').scrollIntoView({behavior:'smooth'})">Impact</a>
+                <a onclick="document.getElementById('workflow-section').scrollIntoView({behavior:'smooth'})">Solution</a>
+                <a onclick="document.getElementById('proof-section').scrollIntoView({behavior:'smooth'})">Proof</a>
+                <a href="mailto:web@vorntec.com" class="nav-cta">Contact</a>
+            </div>
+        </div>
+    </nav>
+    
+    <section class="hero">
+        <div id="particles-js"></div>
+        
+        <div class="hero-container">
+            <img src="vorntec.png" alt="VÖRNTEC" class="logo">
+            <h1 class="hero-title">The ChatGPT of Gas Leaks</h1>
+            <p class="hero-subtitle">Science-backed methane leak prediction using data companies already have.</p>
+        </div>
+    </section>
+    
+    <script>
+        // Initialize particles.js with MORE particles and shapes
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 120,
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: '#ffffff'
+                },
+                shape: {
+                    type: ['circle', 'edge', 'triangle'],
+                    stroke: {
+                        width: 0,
+                        color: '#ffffff'
+                    }
+                },
+                opacity: {
+                    value: 0.4,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 4,
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: '#ffffff',
+                    opacity: 0.3,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 1.5,
+                    direction: 'none',
+                    random: true,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: true,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 0.6
+                        }
+                    },
+                    push: {
+                        particles_nb: 4
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
+        // Hide navigation on scroll down
+        let lastScrollTop = 0;
+        const nav = document.getElementById('main-nav');
+        const scrollThreshold = 100;
+
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > scrollThreshold) {
+                if (scrollTop > lastScrollTop) {
+                    // Scrolling down
+                    nav.classList.add('hidden');
+                } else {
+                    // Scrolling up
+                    nav.classList.remove('hidden');
+                }
+            } else {
+                // At top of page
+                nav.classList.remove('hidden');
+            }
+            
+            lastScrollTop = scrollTop;
+        });
+
+        // Auto-scroll Teams messages
+        const teamsMessages = document.querySelector('.teams-messages');
+        const messages = document.querySelectorAll('.teams-message');
+        
+        messages.forEach((message, index) => {
+            message.style.animationDelay = `${index * 0.8}s`;
+            
+            // Scroll to new message after animation
+            setTimeout(() => {
+                if (teamsMessages) {
+                    teamsMessages.scrollTop = teamsMessages.scrollHeight;
+                }
+            }, (index * 800) + 500);
+        });
+
+        // Scroll-lock for Teams section
+        const teamsSection = document.querySelector('.teams');
+        let isScrollLocked = false;
+
+        window.addEventListener('scroll', () => {
+            if (!teamsSection || !teamsMessages) return;
+
+            const teamsSectionRect = teamsSection.getBoundingClientRect();
+            const isInTeamsSection = teamsSectionRect.top <= 100 && teamsSectionRect.bottom >= window.innerHeight;
+
+            if (isInTeamsSection) {
+                const isAtBottom = teamsMessages.scrollTop + teamsMessages.clientHeight >= teamsMessages.scrollHeight - 5;
+                const isAtTop = teamsMessages.scrollTop <= 5;
+
+                // Check if we're scrolling down and not at bottom of chat
+                if (!isAtBottom && !isScrollLocked) {
+                    isScrollLocked = true;
+                }
+
+                // If locked and not at bottom, prevent page scroll and scroll the chat instead
+                if (isScrollLocked && !isAtBottom) {
+                    window.scrollTo(0, window.scrollY);
+                }
+
+                // Unlock when chat reaches bottom
+                if (isAtBottom) {
+                    isScrollLocked = false;
+                }
+            } else {
+                isScrollLocked = false;
+            }
+        });
+
+        // Handle wheel event on Teams section for better control
+        teamsSection?.addEventListener('wheel', (e) => {
+            const teamsSectionRect = teamsSection.getBoundingClientRect();
+            const isInViewport = teamsSectionRect.top <= 100 && teamsSectionRect.bottom >= window.innerHeight;
+
+            if (isInViewport && teamsMessages) {
+                const isAtBottom = teamsMessages.scrollTop + teamsMessages.clientHeight >= teamsMessages.scrollHeight - 5;
+                const isAtTop = teamsMessages.scrollTop <= 5;
+                const scrollingDown = e.deltaY > 0;
+                const scrollingUp = e.deltaY < 0;
+
+                // If scrolling down and not at bottom, scroll the chat and prevent page scroll
+                if (scrollingDown && !isAtBottom) {
+                    e.preventDefault();
+                    teamsMessages.scrollTop += e.deltaY;
+                }
+
+                // If scrolling up and not at top, scroll the chat and prevent page scroll
+                if (scrollingUp && !isAtTop) {
+                    e.preventDefault();
+                    teamsMessages.scrollTop += e.deltaY;
+                }
+            }
+        }, { passive: false });
+    </script>
+    
+    <section class="highlights">
+        <div class="highlights-container">
+            <div class="highlights-stat">Detect with SCADA data</div>
+            <div class="highlights-label">No new sensors required</div>
+            <p class="highlights-description">
+                Predict methane leaks using operational data you already have. Our AI analyzes patterns in your existing SCADA infrastructure to detect anomalies 72 hours before they happen.
+            </p>
+        </div>
+    </section>
+    
+    <section class="problem" id="problem-section">
+        <div class="problem-container">
+            <div class="problem-stat">~£30M</div>
+            <div class="problem-label">Estimated annual loss per operator</div>
+            <p class="problem-description">
+                Mid and upstream operators lose millions annually from methane leaks
+            </p>
+            <div class="recovery-highlight">
+                Production losses up to 6% that we can recover
+            </div>
+        </div>
+    </section>
+    
+    <section class="climate" id="climate-section">
+        <div class="climate-container">
+            <h2 class="climate-title">The Climate Impact</h2>
+            
+            <div class="climate-stats">
+                <div class="climate-stat">
+                    <div class="climate-number">86×</div>
+                    <div class="climate-label">Methane's warming impact over 20 years. Our most powerful short-term climate lever.</div>
+                    <div class="climate-note">¹ Methane's warming impact (GWP20, CO₂e)</div>
+                </div>
+                
+                <div class="climate-stat">
+                    <div class="climate-number">17%</div>
+                    <div class="climate-label">of global anthropogenic methane emissions come from Oil & Gas</div>
+                    <div class="climate-note">⁴</div>
+                </div>
+            </div>
+            
+            <div class="references">
+                ¹ IPCC AR6 | ² NOAA Earth System Research Lab | ³ EIA Natural Gas Composition | ⁴ IEA Methane Tracker 2023
+            </div>
+        </div>
+    </section>
+    
+    <section class="workflow" id="workflow-section">
+        <div class="workflow-container">
+            <h2 class="workflow-title">How It Works</h2>
+            
+            <!-- Top Row: 1 -> 2 -> 3 -->
+            <div class="workflow-row">
+                <div class="workflow-step">
+                    <img src="TGN_ops1.png" alt="Data Capture" class="step-image">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Data Capture</div>
+                    <div class="step-description">
+                        SCADA live & historical data, weather data, emissions data, equipment type
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">→</div>
+                
+                <div class="workflow-step">
+                    <div style="background: #0d1117; height: 200px; margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: flex-start; border: 1px solid rgba(47, 72, 142, 0.1); border-radius: 8px; padding: 1.5rem; overflow: hidden;">
+                        <pre style="font-size: 0.7rem; color: #00D4AA; margin: 0; font-family: 'JetBrains Mono', monospace; line-height: 1.5; text-align: left;">
+<span style="color: #569cd6;">import</span> numpy <span style="color: #569cd6;">as</span> np
+<span style="color: #569cd6;">from</span> sklearn <span style="color: #569cd6;">import</span> ensemble
+<span style="color: #808080;"># Análisis predictivo</span>
+model = XGBoost()
+prediction = model.predict()
+<span style="color: #808080;"># Detección anomalías</span>
+anomaly_score = 0.94
+<span style="color: #569cd6;">if</span> anomaly_score > 0.85:
+    alert_team()
+                        </pre>
+                    </div>
+                    <div class="step-number">2</div>
+                    <div class="step-title">AI Analysis</div>
+                    <div class="step-description">
+                        Predictive models, anomaly detection, risk quantification
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">→</div>
+                
+                <div class="workflow-step">
+                    <img src="TGN_ops2.png" alt="Alert" class="step-image">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Alert Generated</div>
+                    <div class="step-description">
+                        Potential leak identified, location, confidence 94%, estimated time 72h
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Arrow Down -->
+            <div class="workflow-arrow down">↓</div>
+            
+            <!-- Bottom Row: 6 → 5 → 4 (arrows point right, flow continues) -->
+            <div class="workflow-row">
+                <div class="workflow-step">
+                    <img src="TGN_ops3.png" alt="Problem Resolved" class="step-image">
+                    <div class="step-number">6</div>
+                    <div class="step-title">Problem Resolved</div>
+                    <div class="step-description">
+                        Maintenance completed, leak prevented, GRI report generated, system monitoring
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">←</div>
+                
+                <div class="workflow-step">
+                    <img src="SAP.png" alt="Work Order" class="step-image">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Execution</div>
+                    <div class="step-description">
+                        Work order opened by agent, priority: high, team assigned, parts suggested
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">←</div>
+                
+                <div class="workflow-step">
+                    <div style="background: #f5f5f5; height: 200px; margin-bottom: 1.5rem; border: 1px solid rgba(47, 72, 142, 0.1); border-radius: 8px; padding: 1rem; overflow: hidden; display: flex; flex-direction: column; gap: 0.5rem;">
+                        <div style="font-size: 0.65rem; color: #666; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.4rem;">💬 Maintenance – LDAR</div>
+                        
+                        <div style="display: flex; gap: 0.4rem; align-items: flex-start;">
+                            <div style="width: 18px; height: 18px; background: #00D4AA; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; color: white; font-weight: 700; flex-shrink: 0;">VA</div>
+                            <div style="flex: 1;">
+                                <div style="background: #e8f5e9; padding: 0.4rem; border-radius: 4px; font-size: 0.6rem; color: #1b5e20; border: 1px solid #00D4AA;">
+                                    🚨 Alert: Valve A-23<br>
+                                    94% confidence | 72h
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.4rem; align-items: flex-start; justify-content: flex-end;">
+                            <div style="background: #5b5fc7; padding: 0.4rem; border-radius: 4px; font-size: 0.6rem; color: white; max-width: 70%;">
+                                Create priority WO
+                            </div>
+                        </div>
+                        
+                        <div style="display: flex; gap: 0.4rem; align-items: flex-start;">
+                            <div style="width: 18px; height: 18px; background: #00D4AA; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; color: white; font-weight: 700; flex-shrink: 0;">VA</div>
+                            <div style="flex: 1;">
+                                <div style="background: #e8f5e9; padding: 0.4rem; border-radius: 4px; font-size: 0.6rem; color: #1b5e20; border: 1px solid #00D4AA;">
+                                    ✅ WO #2025-0847 created
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="step-number">4</div>
+                    <div class="step-title">Human Coordination</div>
+                    <div class="step-description">
+                        Team notification, resource assignment, action confirmation
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="teams">
+        <div class="teams-container">
+            <h2 class="teams-title">Built for Your Workflow</h2>
+            <p class="teams-description">
+                Seamless integration with Microsoft Teams, Slack, or your existing systems. The best algorithm is worthless if operators don't act on it.
+            </p>
+            
+            <div class="teams-window">
+                <div class="teams-header">
+                    <div class="teams-dots">
+                        <div class="teams-dot"></div>
+                        <div class="teams-dot"></div>
+                        <div class="teams-dot"></div>
+                    </div>
+                    <div class="teams-header-text">Microsoft Teams — Maintenance / LDAR</div>
+                </div>
+                
+                <div class="teams-messages">
+                    <div class="teams-message bot">
+                        <div class="teams-avatar bot">VA</div>
+                        <div class="teams-message-content">
+                            <div class="teams-message-name">
+                                VÖRNTEC Agent
+                                <span class="teams-message-time">09:42</span>
+                            </div>
+                            <div class="teams-bubble">
+                                <div class="teams-badge alert">⚠ Predictive Alert</div>
+                                <p><strong>Anomaly detected: High probability leak event</strong></p>
+                                <p style="margin-top: 1rem;">
+                                    📍 <strong>Location:</strong> Well #47 – Valve A-23<br>
+                                    ⏱️ <strong>Estimated time:</strong> 72 hours<br>
+                                    🎯 <strong>Confidence:</strong> 94%<br>
+                                    📊 <strong>Estimated emissions:</strong> 18 kg CH₄/day<br>
+                                    💰 <strong>Financial impact:</strong> USD 1,200/day
+                                </p>
+                                <p style="margin-top: 1rem;">Would you like me to create a preventive work order?</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="teams-message user">
+                        <div class="teams-avatar user">JR</div>
+                        <div class="teams-message-content">
+                            <div class="teams-message-name" style="text-align: right;">
+                                Javier Ruiz
+                                <span class="teams-message-time">09:43</span>
+                            </div>
+                            <div class="teams-bubble">
+                                Who is available to attend this valve today?
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="teams-message bot">
+                        <div class="teams-avatar bot">VA</div>
+                        <div class="teams-message-content">
+                            <div class="teams-message-name">
+                                VÖRNTEC Agent
+                                <span class="teams-message-time">09:43</span>
+                            </div>
+                            <div class="teams-bubble">
+                                <p><strong>Available team:</strong></p>
+                                <p style="margin-top: 0.75rem;">
+                                    👤 North Maintenance<br>
+                                    👨‍💼 Supervisor: M. Fernández<br>
+                                    📅 Today 14:00–18:00<br>
+                                    🚗 12 km (≈20 min)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="teams-message user">
+                        <div class="teams-avatar user">JR</div>
+                        <div class="teams-message-content">
+                            <div class="teams-message-name" style="text-align: right;">
+                                Javier Ruiz
+                                <span class="teams-message-time">09:44</span>
+                            </div>
+                            <div class="teams-bubble">
+                                Perfect. Create the work order with high priority and notify the supervisor.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="teams-message bot">
+                        <div class="teams-avatar bot">VA</div>
+                        <div class="teams-message-content">
+                            <div class="teams-message-name">
+                                VÖRNTEC Agent
+                                <span class="teams-message-time">09:44</span>
+                            </div>
+                            <div class="teams-bubble success">
+                                <div class="teams-badge success">✓ Completed</div>
+                                <p><strong>Action completed successfully</strong></p>
+                                <p style="margin-top: 0.75rem;">
+                                    📋 WO #2025-0847 created in SAP PM<br>
+                                    ⚠️ Priority: High<br>
+                                    📅 Today 14:00<br>
+                                    👨‍💼 Assigned to: M. Fernández<br>
+                                    ✉️ Notification sent
+                                </p>
+                                <p style="margin-top: 0.75rem; opacity: 0.8;">The system will continue monitoring this valve.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="proof" id="proof-section">
+        <div class="proof-container">
+            <div class="proof-header">
+                <h2 class="proof-title">Proven Model Accuracy: 99.58% on Peer-Reviewed Sensor Dataset</h2>
+                <div class="proof-label">Proof of Concept</div>
+                <p class="proof-description">
+                    We validated our ML approach on the UCI Gas Sensor Array Dataset — a peer-reviewed benchmark of real sensor data.
+                </p>
+            </div>
+            
+            <div class="accuracy-hero">
+                <div class="accuracy-number">99.58%</div>
+                <div class="accuracy-subtitle">Accuracy</div>
+            </div>
+            
+            <div class="proof-metrics">
+                <div class="proof-metric">
+                    <div class="proof-metric-number">1,912</div>
+                    <div class="proof-metric-label">True Positives</div>
+                </div>
+                
+                <div class="proof-metric">
+                    <div class="proof-metric-number">8</div>
+                    <div class="proof-metric-label">False Negatives (0.42%)</div>
+                </div>
+                
+                <div class="proof-metric">
+                    <div class="proof-metric-number">8</div>
+                    <div class="proof-metric-label">False Positives (0.14%)</div>
+                </div>
+            </div>
+            
+            <div class="proof-details">
+                <div class="proof-details-title">Dataset</div>
+                <p class="proof-details-text">7,680 readings across 4 gas types with 36-month sensor drift simulation</p>
+                
+                <div class="proof-details-title" style="margin-top: 1.5rem;">Model Performance</div>
+                <p class="proof-details-text">Performance across gas types and sensor drift conditions</p>
+            </div>
+            
+            <p class="proof-conclusion">
+                This proves our ML approach works. Next: adapt it to SCADA data for methane leak prediction.
+            </p>
+        </div>
+    </section>
+    
+    <section class="contact">
+        <div class="contact-container">
+            <h2 class="contact-title">Let's Talk</h2>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <div class="contact-label">London</div>
+                    <div class="contact-value">United Kingdom</div>
+                </div>
+                
+                <div class="contact-item">
+                    <div class="contact-label">Buenos Aires</div>
+                    <div class="contact-value">Argentina</div>
+                </div>
+            </div>
+            
+            <a href="mailto:web@vorntec.com" class="contact-email">web@vorntec.com</a>
+        </div>
+    </section>
+    
+    <footer>
+        © 2025 VÖRNTEC — www.vorntec.com
+    </footer>
+</body>
+</html>
