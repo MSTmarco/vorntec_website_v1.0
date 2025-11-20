@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,6 +20,13 @@
             color: #fff;
             overflow-x: hidden;
         }
+        
+        /* Hide elements by language */
+        [data-lang="en"] { display: block; }
+        [data-lang="es"] { display: none; }
+        
+        html[lang="es"] [data-lang="en"] { display: none; }
+        html[lang="es"] [data-lang="es"] { display: block; }
         
         /* Navigation Menu */
         nav {
@@ -45,11 +52,40 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
         
-        .nav-logo {
-            height: 24px;
-            filter: brightness(0) invert(1);
+        .lang-toggle {
+            position: absolute;
+            right: 3rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .lang-btn {
+            background: transparent;
+            color: rgba(255, 255, 255, 0.6);
+            border: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 0.25rem 0.5rem;
+        }
+        
+        .lang-btn:hover {
+            color: #fff;
+        }
+        
+        .lang-btn.active {
+            color: #fff;
+            border-bottom: 2px solid #fff;
+        }
+        
+        .lang-separator {
+            color: rgba(255, 255, 255, 0.3);
         }
         
         .nav-links {
@@ -177,6 +213,10 @@
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
+            }
+            
+            .lang-toggle {
+                right: 1rem;
             }
         }
         
@@ -1132,13 +1172,33 @@
 <body>
     <nav id="main-nav">
         <div class="nav-container">
-            
             <div class="nav-links">
-                <a onclick="document.getElementById('problem-section').scrollIntoView({behavior:'smooth'})">Problem</a>
-                <a onclick="document.getElementById('climate-section').scrollIntoView({behavior:'smooth'})">Impact</a>
-                <a onclick="document.getElementById('workflow-section').scrollIntoView({behavior:'smooth'})">Solution</a>
-                <a onclick="document.getElementById('proof-section').scrollIntoView({behavior:'smooth'})">Proof</a>
-                <a onclick="document.getElementById('contact-section').scrollIntoView({behavior:'smooth'})" class="nav-cta">Contact</a>
+                <a onclick="document.getElementById('problem-section').scrollIntoView({behavior:'smooth'})">
+                    <span data-lang="en">Problem</span>
+                    <span data-lang="es">Problema</span>
+                </a>
+                <a onclick="document.getElementById('climate-section').scrollIntoView({behavior:'smooth'})">
+                    <span data-lang="en">Impact</span>
+                    <span data-lang="es">Impacto</span>
+                </a>
+                <a onclick="document.getElementById('workflow-section').scrollIntoView({behavior:'smooth'})">
+                    <span data-lang="en">Solution</span>
+                    <span data-lang="es">Solución</span>
+                </a>
+                <a onclick="document.getElementById('proof-section').scrollIntoView({behavior:'smooth'})">
+                    <span data-lang="en">Proof</span>
+                    <span data-lang="es">Prueba</span>
+                </a>
+                <a onclick="document.getElementById('contact-section').scrollIntoView({behavior:'smooth'})" class="nav-cta">
+                    <span data-lang="en">Contact</span>
+                    <span data-lang="es">Contacto</span>
+                </a>
+            </div>
+            
+            <div class="lang-toggle">
+                <button class="lang-btn active" onclick="switchLanguage('en')">EN</button>
+                <span class="lang-separator">/</span>
+                <button class="lang-btn" onclick="switchLanguage('es')">ES</button>
             </div>
         </div>
     </nav>
@@ -1148,8 +1208,14 @@
         
         <div class="hero-container">
             <img src="vorntec.png" alt="VÖRNTEC" class="logo">
-            <h1 class="hero-title">The ChatGPT of Gas Leaks</h1>
-            <p class="hero-subtitle">Science-backed methane leak prediction using data companies already have.</p>
+            <h1 class="hero-title">
+                <span data-lang="en">The ChatGPT of Gas Leaks</span>
+                <span data-lang="es">El ChatGPT de las Fugas de Gas</span>
+            </h1>
+            <p class="hero-subtitle">
+                <span data-lang="en">Science-backed methane leak detection using data companies already have.</span>
+                <span data-lang="es">Detección de fugas de metano respaldada por la ciencia usando datos que las empresas ya tienen.</span>
+            </p>
         </div>
     </section>
     
@@ -1242,6 +1308,35 @@
                 }
             },
             retina_detect: true
+        });
+
+        // Language switcher
+        function switchLanguage(lang) {
+            const html = document.getElementById('html-root');
+            html.setAttribute('lang', lang);
+            
+            // Update active button
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Store preference
+            localStorage.setItem('preferredLanguage', lang);
+        }
+        
+        // Load saved language preference
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+            if (savedLang === 'es') {
+                document.getElementById('html-root').setAttribute('lang', 'es');
+                document.querySelectorAll('.lang-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                    if (btn.textContent === 'ES') {
+                        btn.classList.add('active');
+                    }
+                });
+            }
         });
 
         // Hide navigation on scroll down
@@ -1344,10 +1439,17 @@
     
     <section class="highlights">
         <div class="highlights-container">
-            <div class="highlights-stat">Detect with SCADA data</div>
-            <div class="highlights-label">No new sensors required</div>
+            <div class="highlights-stat">
+                <span data-lang="en">Detect with SCADA data</span>
+                <span data-lang="es">Detecta con datos SCADA</span>
+            </div>
+            <div class="highlights-label">
+                <span data-lang="en">No new sensors required</span>
+                <span data-lang="es">Sin necesidad de nuevos sensores</span>
+            </div>
             <p class="highlights-description">
-                Predict methane leaks using operational data you already have. Our AI analyzes patterns in your existing SCADA infrastructure to detect anomalies 72 hours before they happen.
+                <span data-lang="en">Detect methane leaks using operational data you already have. Our AI analyzes patterns in your existing SCADA infrastructure to detect anomalies 72 hours before they happen.</span>
+                <span data-lang="es">Detecta fugas de metano usando datos operacionales que ya tienes. Nuestra IA analiza patrones en tu infraestructura SCADA existente para detectar anomalías 72 horas antes de que sucedan.</span>
             </p>
         </div>
     </section>
@@ -1355,30 +1457,47 @@
     <section class="problem" id="problem-section">
         <div class="problem-container">
             <div class="problem-stat">~£30M</div>
-            <div class="problem-label">Estimated annual loss per operator</div>
+            <div class="problem-label">
+                <span data-lang="en">Estimated annual loss per operator</span>
+                <span data-lang="es">Pérdida anual estimada por operador</span>
+            </div>
             <p class="problem-description">
-                Mid and upstream operators lose millions annually from methane leaks
+                <span data-lang="en">Mid and upstream operators lose millions annually from methane leaks</span>
+                <span data-lang="es">Operadores midstream y upstream pierden millones anualmente por fugas de metano</span>
             </p>
             <div class="recovery-highlight">
-                Production losses up to 6% that we can recover
+                <span data-lang="en">Production losses up to 6% that we can recover</span>
+                <span data-lang="es">Pérdidas de producción de hasta 6% que podemos recuperar</span>
             </div>
         </div>
     </section>
     
     <section class="climate" id="climate-section">
         <div class="climate-container">
-            <h2 class="climate-title">The Climate Impact</h2>
+            <h2 class="climate-title">
+                <span data-lang="en">The Climate Impact</span>
+                <span data-lang="es">El Impacto Climático</span>
+            </h2>
             
             <div class="climate-stats">
                 <div class="climate-stat">
                     <div class="climate-number">86×</div>
-                    <div class="climate-label">Methane's warming impact over 20 years. Our most powerful short-term climate lever.</div>
-                    <div class="climate-note">¹ Methane's warming impact (GWP20, CO₂e)</div>
+                    <div class="climate-label">
+                        <span data-lang="en">Methane's warming impact over 20 years. Our most powerful short-term climate lever.</span>
+                        <span data-lang="es">Impacto de calentamiento del metano en 20 años. Nuestra palanca climática a corto plazo más poderosa.</span>
+                    </div>
+                    <div class="climate-note">
+                        <span data-lang="en">¹ Methane's warming impact (GWP20, CO₂e)</span>
+                        <span data-lang="es">¹ Impacto de calentamiento del metano (GWP20, CO₂e)</span>
+                    </div>
                 </div>
                 
                 <div class="climate-stat">
                     <div class="climate-number">17%</div>
-                    <div class="climate-label">of global anthropogenic methane emissions come from Oil & Gas</div>
+                    <div class="climate-label">
+                        <span data-lang="en">of global anthropogenic methane emissions come from Oil & Gas</span>
+                        <span data-lang="es">de las emisiones antropogénicas globales de metano provienen del Petróleo y Gas</span>
+                    </div>
                     <div class="climate-note">⁴</div>
                 </div>
             </div>
@@ -1391,16 +1510,23 @@
     
     <section class="workflow" id="workflow-section">
         <div class="workflow-container">
-            <h2 class="workflow-title">How It Works</h2>
+            <h2 class="workflow-title">
+                <span data-lang="en">How It Works</span>
+                <span data-lang="es">Cómo Funciona</span>
+            </h2>
             
             <!-- Top Row: 1 -> 2 -> 3 -->
             <div class="workflow-row">
                 <div class="workflow-step">
                     <img src="TGN_ops1.png" alt="Data Capture" class="step-image">
                     <div class="step-number">1</div>
-                    <div class="step-title">Data Capture</div>
+                    <div class="step-title">
+                        <span data-lang="en">Data Capture</span>
+                        <span data-lang="es">Captura de Datos</span>
+                    </div>
                     <div class="step-description">
-                        SCADA live & historical data, weather data, emissions data, equipment type
+                        <span data-lang="en">SCADA live & historical data, weather data, emissions data, equipment type</span>
+                        <span data-lang="es">Datos SCADA en vivo e históricos, datos meteorológicos, datos de emisiones, tipo de equipo</span>
                     </div>
                 </div>
                 
@@ -1421,9 +1547,13 @@ anomaly_score = 0.94
                         </pre>
                     </div>
                     <div class="step-number">2</div>
-                    <div class="step-title">AI Analysis</div>
+                    <div class="step-title">
+                        <span data-lang="en">AI Analysis</span>
+                        <span data-lang="es">Análisis IA</span>
+                    </div>
                     <div class="step-description">
-                        Predictive models, anomaly detection, risk quantification
+                        <span data-lang="en">Predictive models, anomaly detection, risk quantification</span>
+                        <span data-lang="es">Modelos predictivos, detección de anomalías, cuantificación de riesgos</span>
                     </div>
                 </div>
                 
@@ -1432,9 +1562,13 @@ anomaly_score = 0.94
                 <div class="workflow-step">
                     <img src="TGN_ops2.png" alt="Alert" class="step-image">
                     <div class="step-number">3</div>
-                    <div class="step-title">Alert Generated</div>
+                    <div class="step-title">
+                        <span data-lang="en">Alert Generated</span>
+                        <span data-lang="es">Alerta Generada</span>
+                    </div>
                     <div class="step-description">
-                        Potential leak identified, location, confidence 94%, estimated time 72h
+                        <span data-lang="en">Potential leak identified, location, confidence 94%, estimated time 72h</span>
+                        <span data-lang="es">Fuga potencial identificada, ubicación, confianza 94%, tiempo estimado 72h</span>
                     </div>
                 </div>
             </div>
@@ -1447,9 +1581,13 @@ anomaly_score = 0.94
                 <div class="workflow-step">
                     <img src="TGN_ops3.png" alt="Problem Resolved" class="step-image">
                     <div class="step-number">6</div>
-                    <div class="step-title">Problem Resolved</div>
+                    <div class="step-title">
+                        <span data-lang="en">Problem Resolved</span>
+                        <span data-lang="es">Problema Resuelto</span>
+                    </div>
                     <div class="step-description">
-                        Maintenance completed, leak prevented, GRI report generated, system monitoring
+                        <span data-lang="en">Maintenance completed, leak prevented, GRI report generated, system monitoring</span>
+                        <span data-lang="es">Mantenimiento completado, fuga prevenida, reporte GRI generado, monitoreo del sistema</span>
                     </div>
                 </div>
                 
@@ -1458,9 +1596,13 @@ anomaly_score = 0.94
                 <div class="workflow-step">
                     <img src="SAP.png" alt="Work Order" class="step-image">
                     <div class="step-number">5</div>
-                    <div class="step-title">Execution</div>
+                    <div class="step-title">
+                        <span data-lang="en">Execution</span>
+                        <span data-lang="es">Ejecución</span>
+                    </div>
                     <div class="step-description">
-                        Work order opened by agent, priority: high, team assigned, parts suggested
+                        <span data-lang="en">Work order opened by agent, priority: high, team assigned, parts suggested</span>
+                        <span data-lang="es">Orden de trabajo abierta por agente, prioridad: alta, equipo asignado, partes sugeridas</span>
                     </div>
                 </div>
                 
@@ -1468,21 +1610,21 @@ anomaly_score = 0.94
                 
                 <div class="workflow-step">
                     <div style="background: #f5f5f5; height: 200px; margin-bottom: 1.5rem; border: 1px solid rgba(47, 72, 142, 0.1); border-radius: 8px; padding: 1rem; overflow: hidden; display: flex; flex-direction: column; gap: 0.5rem;">
-                        <div style="font-size: 0.65rem; color: #666; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.4rem;">💬 Maintenance – LDAR</div>
+                        <div style="font-size: 0.65rem; color: #666; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.4rem;">💬 Mantenimiento – LDAR</div>
                         
                         <div style="display: flex; gap: 0.4rem; align-items: flex-start;">
                             <div style="width: 18px; height: 18px; background: #00D4AA; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; color: white; font-weight: 700; flex-shrink: 0;">VA</div>
                             <div style="flex: 1;">
                                 <div style="background: #e8f5e9; padding: 0.4rem; border-radius: 4px; font-size: 0.6rem; color: #1b5e20; border: 1px solid #00D4AA;">
-                                    🚨 Alert: Valve A-23<br>
-                                    94% confidence | 72h
+                                    🚨 Alerta: Válvula A-23<br>
+                                    94% confianza | 72h
                                 </div>
                             </div>
                         </div>
                         
                         <div style="display: flex; gap: 0.4rem; align-items: flex-start; justify-content: flex-end;">
                             <div style="background: #5b5fc7; padding: 0.4rem; border-radius: 4px; font-size: 0.6rem; color: white; max-width: 70%;">
-                                Create priority WO
+                                Crear OT prioritaria
                             </div>
                         </div>
                         
@@ -1490,15 +1632,19 @@ anomaly_score = 0.94
                             <div style="width: 18px; height: 18px; background: #00D4AA; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; color: white; font-weight: 700; flex-shrink: 0;">VA</div>
                             <div style="flex: 1;">
                                 <div style="background: #e8f5e9; padding: 0.4rem; border-radius: 4px; font-size: 0.6rem; color: #1b5e20; border: 1px solid #00D4AA;">
-                                    ✅ WO #2025-0847 created
+                                    ✅ OT #2025-0847 creada
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="step-number">4</div>
-                    <div class="step-title">Human Coordination</div>
+                    <div class="step-title">
+                        <span data-lang="en">Human Coordination</span>
+                        <span data-lang="es">Coordinación Humana</span>
+                    </div>
                     <div class="step-description">
-                        Team notification, resource assignment, action confirmation
+                        <span data-lang="en">Team notification, resource assignment, action confirmation</span>
+                        <span data-lang="es">Notificación del equipo, asignación de recursos, confirmación de acción</span>
                     </div>
                 </div>
             </div>
@@ -1507,9 +1653,13 @@ anomaly_score = 0.94
     
     <section class="teams">
         <div class="teams-container">
-            <h2 class="teams-title">Built for Your Workflow</h2>
+            <h2 class="teams-title">
+                <span data-lang="en">Built for Your Workflow</span>
+                <span data-lang="es">Diseñado para Tu Flujo de Trabajo</span>
+            </h2>
             <p class="teams-description">
-                Seamless integration with Microsoft Teams, Slack, or your existing systems. The best algorithm is worthless if operators don't act on it.
+                <span data-lang="en">Seamless integration with Microsoft Teams, Slack, or your existing systems. The best algorithm is worthless if operators don't act on it.</span>
+                <span data-lang="es">Integración perfecta con Microsoft Teams, Slack o tus sistemas existentes. El mejor algoritmo no vale nada si los operadores no actúan sobre él.</span>
             </p>
             
             <div class="teams-window">
@@ -1519,7 +1669,7 @@ anomaly_score = 0.94
                         <div class="teams-dot"></div>
                         <div class="teams-dot"></div>
                     </div>
-                    <div class="teams-header-text">Microsoft Teams — Maintenance / LDAR</div>
+                    <div class="teams-header-text">Microsoft Teams — Mantenimiento / LDAR</div>
                 </div>
                 
                 <div class="teams-messages">
@@ -1527,20 +1677,39 @@ anomaly_score = 0.94
                         <div class="teams-avatar bot">VA</div>
                         <div class="teams-message-content">
                             <div class="teams-message-name">
-                                VÖRNTEC Agent
+                                <span data-lang="en">VÖRNTEC Agent</span>
+                                <span data-lang="es">Agente VÖRNTEC</span>
                                 <span class="teams-message-time">09:42</span>
                             </div>
                             <div class="teams-bubble">
-                                <div class="teams-badge alert">⚠ Predictive Alert</div>
-                                <p><strong>Anomaly detected: High probability leak event</strong></p>
+                                <div class="teams-badge alert">
+                                    <span data-lang="en">⚠ Predictive Alert</span>
+                                    <span data-lang="es">⚠ Alerta Predictiva</span>
+                                </div>
+                                <p><strong>
+                                    <span data-lang="en">Anomaly detected: High probability leak event</span>
+                                    <span data-lang="es">Anomalía detectada: Evento de fuga de alta probabilidad</span>
+                                </strong></p>
                                 <p style="margin-top: 1rem;">
-                                    📍 <strong>Location:</strong> Well #47 – Valve A-23<br>
-                                    ⏱️ <strong>Estimated time:</strong> 72 hours<br>
-                                    🎯 <strong>Confidence:</strong> 94%<br>
-                                    📊 <strong>Estimated emissions:</strong> 18 kg CH₄/day<br>
-                                    💰 <strong>Financial impact:</strong> USD 1,200/day
+                                    <span data-lang="en">
+                                        📍 <strong>Location:</strong> Well #47 – Valve A-23<br>
+                                        ⚙️ <strong>Spare parts:</strong> 10mm nuts x10<br>
+                                        🎯 <strong>Confidence:</strong> 94%<br>
+                                        📊 <strong>Estimated emissions:</strong> 18 kg CH₄/day<br>
+                                        💰 <strong>Financial impact:</strong> USD 1,200/day
+                                    </span>
+                                    <span data-lang="es">
+                                        📍 <strong>Ubicación:</strong> Pozo #47 – Válvula A-23<br>
+                                        ⚙️ <strong>Repuestos:</strong> Tuerca de 10mm 10x<br>
+                                        🎯 <strong>Confianza:</strong> 94%<br>
+                                        📊 <strong>Emisiones estimadas:</strong> 18 kg CH₄/día<br>
+                                        💰 <strong>Impacto financiero:</strong> USD 1,200/día
+                                    </span>
                                 </p>
-                                <p style="margin-top: 1rem;">Would you like me to create a preventive work order?</p>
+                                <p style="margin-top: 1rem;">
+                                    <span data-lang="en">Would you like me to create a preventive work order?</span>
+                                    <span data-lang="es">¿Desea que cree una orden de trabajo preventiva?</span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -1553,7 +1722,8 @@ anomaly_score = 0.94
                                 <span class="teams-message-time">09:43</span>
                             </div>
                             <div class="teams-bubble">
-                                Who is available to attend this valve today?
+                                <span data-lang="en">Who is available to attend this valve today?</span>
+                                <span data-lang="es">¿Quién está disponible para atender esta válvula hoy?</span>
                             </div>
                         </div>
                     </div>
@@ -1562,16 +1732,28 @@ anomaly_score = 0.94
                         <div class="teams-avatar bot">VA</div>
                         <div class="teams-message-content">
                             <div class="teams-message-name">
-                                VÖRNTEC Agent
+                                <span data-lang="en">VÖRNTEC Agent</span>
+                                <span data-lang="es">Agente VÖRNTEC</span>
                                 <span class="teams-message-time">09:43</span>
                             </div>
                             <div class="teams-bubble">
-                                <p><strong>Available team:</strong></p>
+                                <p><strong>
+                                    <span data-lang="en">Available team:</span>
+                                    <span data-lang="es">Equipo disponible:</span>
+                                </strong></p>
                                 <p style="margin-top: 0.75rem;">
-                                    👤 North Maintenance<br>
-                                    👨‍💼 Supervisor: M. Fernández<br>
-                                    📅 Today 14:00–18:00<br>
-                                    🚗 12 km (≈20 min)
+                                    <span data-lang="en">
+                                        👤 North Maintenance<br>
+                                        👨‍💼 Supervisor: M. Fernández<br>
+                                        📅 Today 14:00–18:00<br>
+                                        🚗 12 km (≈20 min)
+                                    </span>
+                                    <span data-lang="es">
+                                        👤 Mantenimiento Norte<br>
+                                        👨‍💼 Supervisor: M. Fernández<br>
+                                        📅 Hoy 14:00–18:00<br>
+                                        🚗 12 km (≈20 min)
+                                    </span>
                                 </p>
                             </div>
                         </div>
@@ -1585,7 +1767,8 @@ anomaly_score = 0.94
                                 <span class="teams-message-time">09:44</span>
                             </div>
                             <div class="teams-bubble">
-                                Perfect. Create the work order with high priority and notify the supervisor.
+                                <span data-lang="en">Perfect. Create the work order with high priority and notify the supervisor.</span>
+                                <span data-lang="es">Perfecto. Crea la orden de trabajo con alta prioridad y notifica al supervisor.</span>
                             </div>
                         </div>
                     </div>
@@ -1594,20 +1777,39 @@ anomaly_score = 0.94
                         <div class="teams-avatar bot">VA</div>
                         <div class="teams-message-content">
                             <div class="teams-message-name">
-                                VÖRNTEC Agent
+                                <span data-lang="en">VÖRNTEC Agent</span>
+                                <span data-lang="es">Agente VÖRNTEC</span>
                                 <span class="teams-message-time">09:44</span>
                             </div>
                             <div class="teams-bubble success">
-                                <div class="teams-badge success">✓ Completed</div>
-                                <p><strong>Action completed successfully</strong></p>
+                                <div class="teams-badge success">
+                                    <span data-lang="en">✓ Completed</span>
+                                    <span data-lang="es">✓ Completado</span>
+                                </div>
+                                <p><strong>
+                                    <span data-lang="en">Action completed successfully</span>
+                                    <span data-lang="es">Acción completada exitosamente</span>
+                                </strong></p>
                                 <p style="margin-top: 0.75rem;">
-                                    📋 WO #2025-0847 created in SAP PM<br>
-                                    ⚠️ Priority: High<br>
-                                    📅 Today 14:00<br>
-                                    👨‍💼 Assigned to: M. Fernández<br>
-                                    ✉️ Notification sent
+                                    <span data-lang="en">
+                                        📋 WO #2025-0847 created in SAP PM<br>
+                                        ⚠️ Priority: High<br>
+                                        📅 Today 14:00<br>
+                                        👨‍💼 Assigned to: M. Fernández<br>
+                                        ✉️ Notification sent
+                                    </span>
+                                    <span data-lang="es">
+                                        📋 OT #2025-0847 creada en SAP PM<br>
+                                        ⚠️ Prioridad: Alta<br>
+                                        📅 Hoy 14:00<br>
+                                        👨‍💼 Asignado a: M. Fernández<br>
+                                        ✉️ Notificación enviada
+                                    </span>
                                 </p>
-                                <p style="margin-top: 0.75rem; opacity: 0.8;">The system will continue monitoring this valve.</p>
+                                <p style="margin-top: 0.75rem; opacity: 0.8;">
+                                    <span data-lang="en">The system will continue monitoring this valve.</span>
+                                    <span data-lang="es">El sistema continuará monitoreando esta válvula.</span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -1619,52 +1821,84 @@ anomaly_score = 0.94
     <section class="proof" id="proof-section">
         <div class="proof-container">
             <div class="proof-header">
-                <h2 class="proof-title">Proven Model Accuracy: 99.58% on Peer-Reviewed Sensor Dataset</h2>
-                <div class="proof-label">Proof of Concept</div>
+                <h2 class="proof-title">
+                    <span data-lang="en">Proven Model Accuracy: 99.58% on Peer-Reviewed Sensor Dataset</span>
+                    <span data-lang="es">Precisión del Modelo Comprobada: 99.58% en Dataset de Sensores Revisado por Pares</span>
+                </h2>
+                <div class="proof-label">
+                    <span data-lang="en">Proof of Concept</span>
+                    <span data-lang="es">Prueba de Concepto</span>
+                </div>
                 <p class="proof-description">
-                    We validated our ML approach on the UCI Gas Sensor Array Dataset — a peer-reviewed benchmark of real sensor data.
+                    <span data-lang="en">We validated our ML approach on the UCI Gas Sensor Array Dataset — a peer-reviewed benchmark of real sensor data.</span>
+                    <span data-lang="es">Validamos nuestro enfoque de ML en el UCI Gas Sensor Array Dataset — un benchmark revisado por pares de datos reales de sensores.</span>
                 </p>
             </div>
             
             <div class="accuracy-hero">
                 <div class="accuracy-number">99.58%</div>
-                <div class="accuracy-subtitle">Accuracy</div>
+                <div class="accuracy-subtitle">
+                    <span data-lang="en">Accuracy</span>
+                    <span data-lang="es">Precisión</span>
+                </div>
             </div>
             
             <div class="proof-metrics">
                 <div class="proof-metric">
                     <div class="proof-metric-number">1,912</div>
-                    <div class="proof-metric-label">True Positives</div>
+                    <div class="proof-metric-label">
+                        <span data-lang="en">True Positives</span>
+                        <span data-lang="es">Verdaderos Positivos</span>
+                    </div>
                 </div>
                 
                 <div class="proof-metric">
                     <div class="proof-metric-number">8</div>
-                    <div class="proof-metric-label">False Negatives (0.42%)</div>
+                    <div class="proof-metric-label">
+                        <span data-lang="en">False Negatives (0.42%)</span>
+                        <span data-lang="es">Falsos Negativos (0.42%)</span>
+                    </div>
                 </div>
                 
                 <div class="proof-metric">
                     <div class="proof-metric-number">8</div>
-                    <div class="proof-metric-label">False Positives (0.14%)</div>
+                    <div class="proof-metric-label">
+                        <span data-lang="en">False Positives (0.14%)</span>
+                        <span data-lang="es">Falsos Positivos (0.14%)</span>
+                    </div>
                 </div>
             </div>
             
             <div class="proof-details">
                 <div class="proof-details-title">Dataset</div>
-                <p class="proof-details-text">7,680 readings across 4 gas types with 36-month sensor drift simulation</p>
+                <p class="proof-details-text">
+                    <span data-lang="en">7,680 readings across 4 gas types with 36-month sensor drift simulation</span>
+                    <span data-lang="es">7,680 lecturas a través de 4 tipos de gas con simulación de deriva de sensor de 36 meses</span>
+                </p>
                 
-                <div class="proof-details-title" style="margin-top: 1.5rem;">Model Performance</div>
-                <p class="proof-details-text">Performance across gas types and sensor drift conditions</p>
+                <div class="proof-details-title" style="margin-top: 1.5rem;">
+                    <span data-lang="en">Model Performance</span>
+                    <span data-lang="es">Rendimiento del Modelo</span>
+                </div>
+                <p class="proof-details-text">
+                    <span data-lang="en">Performance across gas types and sensor drift conditions</span>
+                    <span data-lang="es">Rendimiento a través de tipos de gas y condiciones de deriva de sensor</span>
+                </p>
             </div>
             
             <p class="proof-conclusion">
-                This proves our ML approach works. Next: adapt it to SCADA data for methane leak prediction.
+                <span data-lang="en">This proves our ML approach works. Next: adapt it to SCADA data for methane leak Detection.</span>
+                <span data-lang="es">Esto prueba que nuestro enfoque de ML funciona. Siguiente: adaptarlo a datos SCADA para detección de fugas de metano.</span>
             </p>
         </div>
     </section>
     
     <section class="contact" id="contact-section">
         <div class="contact-container">
-            <h2 class="contact-title">Let's Talk</h2>
+            <h2 class="contact-title">
+                <span data-lang="en">Let's Talk</span>
+                <span data-lang="es">Hablemos</span>
+            </h2>
             
             <div class="contact-info">
                 <div class="contact-item">
