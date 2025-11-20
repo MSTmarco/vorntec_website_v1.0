@@ -1138,7 +1138,7 @@
                 <a onclick="document.getElementById('climate-section').scrollIntoView({behavior:'smooth'})">Impact</a>
                 <a onclick="document.getElementById('workflow-section').scrollIntoView({behavior:'smooth'})">Solution</a>
                 <a onclick="document.getElementById('proof-section').scrollIntoView({behavior:'smooth'})">Proof</a>
-                <a href="mailto:web@vorntec.com" class="nav-cta">Contact</a>
+                <a onclick="document.getElementById('contact-section').scrollIntoView({behavior:'smooth'})" class="nav-cta">Contact</a>
             </div>
         </div>
     </nav>
@@ -1149,7 +1149,7 @@
         <div class="hero-container">
             <img src="vorntec.png" alt="VÖRNTEC" class="logo">
             <h1 class="hero-title">The ChatGPT of Gas Leaks</h1>
-            <p class="hero-subtitle">Science-backed methane leak prediction using data companies already have.</p>
+            <p class="hero-subtitle">Science-backed methane leak detection using data companies already have.</p>
         </div>
     </section>
     
@@ -1347,14 +1347,14 @@
             <div class="highlights-stat">Detect with SCADA data</div>
             <div class="highlights-label">No new sensors required</div>
             <p class="highlights-description">
-                Predict methane leaks using operational data you already have. Our AI analyzes patterns in your existing SCADA infrastructure to detect anomalies 72 hours before they happen.
+                Detect methane leaks using operational data you already have. Our AI analyzes patterns in your existing SCADA infrastructure to detect anomalies.
             </p>
         </div>
     </section>
     
     <section class="problem" id="problem-section">
         <div class="problem-container">
-            <div class="problem-stat">~£30M</div>
+            <div class="problem-stat">£30M</div>
             <div class="problem-label">Estimated annual loss per operator</div>
             <p class="problem-description">
                 Mid and upstream operators lose millions annually from methane leaks
@@ -1373,18 +1373,18 @@
                 <div class="climate-stat">
                     <div class="climate-number">86×</div>
                     <div class="climate-label">Methane's warming impact over 20 years. Our most powerful short-term climate lever.</div>
-                    <div class="climate-note">¹ Methane's warming impact (GWP20, CO₂e)</div>
+                
                 </div>
                 
                 <div class="climate-stat">
                     <div class="climate-number">17%</div>
                     <div class="climate-label">of global anthropogenic methane emissions come from Oil & Gas</div>
-                    <div class="climate-note">⁴</div>
+                    
                 </div>
             </div>
             
             <div class="references">
-                ¹ IPCC AR6 | ² NOAA Earth System Research Lab | ³ EIA Natural Gas Composition | ⁴ IEA Methane Tracker 2023
+                 IPCC AR6 |  NOAA Earth System Research Lab |  EIA Natural Gas Composition |  IEA Methane Tracker 2023
             </div>
         </div>
     </section>
@@ -1434,7 +1434,7 @@ anomaly_score = 0.94
                     <div class="step-number">3</div>
                     <div class="step-title">Alert Generated</div>
                     <div class="step-description">
-                        Potential leak identified, location, confidence 94%, estimated time 72h
+                        Potential leak identified, location, confidence 94% 
                     </div>
                 </div>
             </div>
@@ -1535,7 +1535,7 @@ anomaly_score = 0.94
                                 <p><strong>Anomaly detected: High probability leak event</strong></p>
                                 <p style="margin-top: 1rem;">
                                     📍 <strong>Location:</strong> Well #47 – Valve A-23<br>
-                                    ⏱️ <strong>Estimated time:</strong> 72 hours<br>
+                                    ⚙️ <strong>Spare parts:</strong> 10mm nuts x10<br>
                                     🎯 <strong>Confidence:</strong> 94%<br>
                                     📊 <strong>Estimated emissions:</strong> 18 kg CH₄/day<br>
                                     💰 <strong>Financial impact:</strong> USD 1,200/day
@@ -1657,12 +1657,12 @@ anomaly_score = 0.94
             </div>
             
             <p class="proof-conclusion">
-                This proves our ML approach works. Next: adapt it to SCADA data for methane leak prediction.
+                This proves our ML approach works. Next: adapt it to SCADA data for methane leak detection.
             </p>
         </div>
     </section>
     
-    <section class="contact">
+    <section class="contact" id="contact-section">
         <div class="contact-container">
             <h2 class="contact-title">Let's Talk</h2>
             
