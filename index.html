@@ -253,9 +253,22 @@
         .logo {
             max-width: 240px;
             height: auto;
-            margin: 0 auto 4rem;
+            margin: 0 auto 3rem;
             display: block;
             filter: brightness(0) invert(1);
+        }
+        
+        .nvidia-badge {
+            max-width: 220px;
+            height: auto;
+            margin: 3rem auto 0;
+            display: block;
+            opacity: 0.95;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nvidia-badge:hover {
+            opacity: 1;
         }
         
         .hero-title {
@@ -278,7 +291,12 @@
         @media (max-width: 768px) {
             .logo {
                 max-width: 180px;
-                margin-bottom: 3rem;
+                margin-bottom: 2.5rem;
+            }
+            
+            .nvidia-badge {
+                max-width: 160px;
+                margin-top: 2.5rem;
             }
         }
         
@@ -1163,9 +1181,38 @@
         footer {
             background: #2F488E;
             color: rgba(255, 255, 255, 0.6);
-            padding: 2rem;
+            padding: 3rem 2rem;
             text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-text {
             font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .footer-badges {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .footer-nvidia-badge {
+            max-width: 180px;
+            height: auto;
+            opacity: 0.75;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-nvidia-badge:hover {
+            opacity: 1;
         }
     </style>
 </head>
@@ -1216,6 +1263,7 @@
                 <span data-lang="en">Science-backed methane leak detection using data companies already have.</span>
                 <span data-lang="es">Detección de fugas de metano respaldada por la ciencia usando datos que las empresas ya tienen.</span>
             </p>
+            <img src="nvidia.jpeg" alt="NVIDIA Inception Program" class="nvidia-badge">
         </div>
     </section>
     
@@ -1917,7 +1965,12 @@ anomaly_score = 0.94
     </section>
     
     <footer>
-        © 2025 VÖRNTEC — www.vorntec.com
+        <div class="footer-content">
+            <div class="footer-text">© 2025 VÖRNTEC — www.vorntec.com</div>
+            <div class="footer-badges">
+                <img src="nv-inception-social-tw-li-template_001.jpeg" alt="NVIDIA Inception Program" class="footer-nvidia-badge">
+            </div>
+        </div>
     </footer>
 </body>
 </html>
